@@ -14,7 +14,7 @@ const req = '';
 fetch(`https://restcountries.com/v3.1/name/uzbekistan`)
 	.then((res) => res.json())
 	.then((data) => {
-		console.log(data);
+		// console.log(data);
 		title.textContent = data[0].name.common;
 		capital.textContent = data[0].capital;
 		flag.textContent = data[0].flag;
@@ -33,13 +33,13 @@ elInput.addEventListener('change', (e) => {
 	)
 		.then((res) => res.json())
 		.then((data) => {
-			console.log(data);
+			// console.log(data);
 			weather.textContent = data.main.feels_like;
 		});
 	fetch(`https://restcountries.com/v3.1/name/${value}`)
 		.then((res) => res.json())
 		.then((data) => {
-			console.log(data);
+			// console.log(data);
 			title.textContent = data[0].name.common;
 			capital.textContent = data[0].capital;
 			flag.textContent = data[0].flag;
