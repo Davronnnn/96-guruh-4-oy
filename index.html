@@ -12,29 +12,49 @@
 			crossorigin="anonymous"
 		/>
 	</head>
+	<style>
+		.rating-stars img {
+			width: 30px;
+		}
+	</style>
 	<body>
 		<div class="container p-3">
-			<h2 class="text-center">Films</h2>
+			<h2 class="text-center">Products</h2>
 			<div class="cards row"></div>
 		</div>
 
-		<template id="film-template">
+		<template id="product-template">
 			<div class="col-4 mt-5">
 				<div class="card">
 					<img src="" class="card-img-top" alt="" />
 					<div class="card-body">
-						<h5 class="card-title"></h5>
-						<p id="overview" class="card-text"></p>
-						<p id="date" class="card-text"></p>
-						<ul id="genres"></ul>
-						<button
+						<h5 class="card-title">Lorem ipsum dolor sit amet.</h5>
+						<p class="date" class="card-text">date</p>
+						<p class="category">Category</p>
+						<p class="price">price</p>
+						<p class="rating">rating</p>
+						<div class="rating-stars">
+							<img
+								class="d-none rating-full"
+								src="./star-full.png"
+								width="30"
+								alt=""
+							/>
+							<img
+								class="d-none rating-half"
+								src="./star-half.png"
+								width="30"
+								alt=""
+							/>
+						</div>
+						<!-- <button
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
 							class="btn btn-primary"
 						>
 							Edit
 						</button>
-						<button class="btn btn-danger">Delete</button>
+						<button class="btn btn-danger">Delete</button> -->
 					</div>
 				</div>
 			</div>
@@ -115,9 +135,7 @@
 			integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
 			crossorigin="anonymous"
 		></script>
-
-		<script src="./js/films.js"></script>
-
-		<script src="./js/main.js"></script>
+		<!-- <script src="./js/utils/findElement.js"></script> -->
+		<script type="module" src="./js/main.js"></script>
 	</body>
 </html>

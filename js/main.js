@@ -1,107 +1,129 @@
-const elCards = document.querySelector('.cards');
-const templateCard = document.querySelector('#film-template');
-const editForm = document.querySelector('#edit-form');
+import findElement from './utils/findElement.js';
+const BASE_URL = 'https://63d3e856a93a149755b5c8f1.mockapi.io';
 
-const elTitle = editForm.querySelector('#title');
+const templateProduct = findElement('#product-template');
+const elCards = findElement('.cards');
 
-const elImgInput = editForm.querySelector('#img');
-const elImg = editForm.querySelector('#edit-img');
-const elOverview = editForm.querySelector('#overview');
-const elDate = editForm.querySelector('#date');
-const elDateText = editForm.querySelector('#date-text');
+let products = [];
 
-function generateDate(date) {
-	return `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${
-		date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-	} ${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}.${
-		date.getMonth() + 1 < 10
-			? '0' + (date.getMonth() + 1)
-			: date.getMonth() + 1
-	}.${date.getFullYear()}`;
-}
-function renderFilms(array, parent = elCards) {
-	parent.textContent = null;
+function renderProducts(array, parent = elCards) {
+	parent.textContent = '';
+
 	const fragment = document.createDocumentFragment();
 
-	array.forEach((film) => {
-		const card = templateCard.content.cloneNode(true);
-		const title = card.querySelector('.card-title');
-		const image = card.querySelector('.card-img-top');
-		const overview = card.querySelector('#overview');
-		const elDate = card.querySelector('#date');
-		const elGenres = card.querySelector('#genres');
+	array.forEach((product) => {
+		const template = templateProduct.content.cloneNode(true);
 
-		const deleteBtn = card.querySelector('.btn-danger');
-		const editBtn = card.querySelector('.btn-primary');
+		const title = findElement('.card-title', template);
+		const date = findElement('.date', template);
+		const img = findElement('.card-img-top', template);
+		const category = findElement('.category', template);
+		const price = findElement('.price', template);
+		const rating = findElement('.rating', template);
 
-		deleteBtn.dataset.id = film.id;
-		editBtn.dataset.id = film.id;
+		const ratingFull = findElement('.rating-full', template);
+		const ratingHalf = findElement('.rating-half', template);
+		const ratingStars = findElement('.rating-stars', template);
 
-		title.textContent = film.title;
-		image.src = film.poster;
-		overview.textContent = film.overview;
+		if (product.rating <= 5 && product.rating > 4.5) {
+			for (let i = 0; i < 4; i++) {
+				const img = document.createElement('img');
+				img.src = ratingFull.src;
 
-		const date = new Date(film.release_date);
-		const result = generateDate(date);
+				ratingStars.appendChild(img);
+			}
+			const img = document.createElement('img');
+			img.src = ratingHalf.src;
+			ratingStars.appendChild(img);
+		} else if (product.rating <= 4.5 && product.rating > 4) {
+			for (let i = 0; i < 4; i++) {
+				const img = document.createElement('img');
+				img.src = ratingFull.src;
 
-		elDate.textContent = result;
+				ratingStars.appendChild(img);
+			}
+		} else if (product.rating <= 4 && product.rating > 3.5) {
+			for (let i = 0; i < 3; i++) {
+				const img = document.createElement('img');
+				img.src = ratingFull.src;
 
-		film.genres.forEach((genre) => {
-			const li = document.createElement('li');
-			li.textContent = genre;
-			elGenres.appendChild(li);
-		});
+				ratingStars.appendChild(img);
+			}
+			const img = document.createElement('img');
+			img.src = ratingHalf.src;
+			ratingStars.appendChild(img);
+		} else if (product.rating <= 3.5 && product.rating > 3) {
+			for (let i = 0; i < 3; i++) {
+				const img = document.createElement('img');
+				img.src = ratingFull.src;
 
-		fragment.appendChild(card);
+				ratingStars.appendChild(img);
+			}
+		} else if (product.rating <= 3 && product.rating > 2.5) {
+			for (let i = 0; i < 3; i++) {
+				const img = document.createElement('img');
+				img.src = ratingFull.src;
+
+				ratingStars.appendChild(img);
+			}
+			const img = document.createElement('img');
+			img.src = ratingHalf.src;
+			ratingStars.appendChild(img);
+		} else if (product.rating <= 2.5 && product.rating > 2) {
+			for (let i = 0; i < 2; i++) {
+				const img = document.createElement('img');
+				img.src = ratingFull.src;
+
+				ratingStars.appendChild(img);
+			}
+		} else if (product.rating <= 2 && product.rating > 1.5) {
+			for (let i = 0; i < 2; i++) {
+				const img = document.createElement('img');
+				img.src = ratingFull.src;
+
+				ratingStars.appendChild(img);
+			}
+			const img = document.createElement('img');
+			img.src = ratingHalf.src;
+			ratingStars.appendChild(img);
+		} else if (product.rating <= 1.5 && product.rating > 1) {
+			for (let i = 0; i < 2; i++) {
+				const img = document.createElement('img');
+				img.src = ratingFull.src;
+
+				ratingStars.appendChild(img);
+			}
+		} else if (product.rating <= 1 && product.rating > 0.5) {
+			const img = document.createElement('img');
+			img.src = ratingFull.src;
+
+			ratingStars.appendChild(img);
+		} else if (product.rating <= 0.5 && product.rating > 0) {
+			const img = document.createElement('img');
+			img.src = ratingHalf.src;
+			ratingStars.appendChild(img);
+		}
+
+		title.textContent = product.name;
+		date.textContent = product.createdAt;
+		category.textContent = product.category;
+		price.textContent = product.price;
+		rating.textContent = product.rating;
+		img.src = product.image;
+
+		fragment.appendChild(template);
+		// parent.appendChild(template)
 	});
 
 	parent.appendChild(fragment);
 }
 
-renderFilms(films);
+(async function () {
+	const res = await fetch(BASE_URL + '/products');
 
-elCards.addEventListener('click', (evt) => {
-	if (evt.target.className.includes('btn-danger')) {
-		const id = evt.target.dataset.id;
+	let data = await res.json();
 
-		const resultArray = films.filter((film) => {
-			if (film.id !== id) {
-				return film;
-			}
-		});
-		films = resultArray;
+	products = data;
 
-		renderFilms(films);
-	}
-	if (evt.target.className.includes('btn-primary')) {
-		const id = evt.target.dataset.id;
-
-		films.forEach((film) => {
-			if (id === film.id) {
-				elImgInput.value = film.poster;
-				elImg.src = film.poster;
-				elTitle.value = film.title;
-				elOverview.value = film.overview;
-
-				const resultDate = generateDate(new Date(film.release_date));
-				elDateText.textContent = resultDate;
-
-				const editBtn = document.querySelector('#editHandler');
-
-				editBtn.addEventListener('click', () => {
-					const title = elTitle.value;
-					const img = elImgInput.value;
-					const date = elDate.value;
-					const overview = elOverview.value;
-
-					film.title = title;
-					film.poster = img;
-					film.release_date = date;
-					film.overview = overview;
-
-					renderFilms(films);
-				});
-			}
-		});
-	}
-});
+	renderProducts(products);
+})();
