@@ -18,18 +18,22 @@
 		}
 	</style>
 	<body>
-		<a href="./admin.html">Kirish</a>
+		<a href="./index.html">Home page</a>
+		<div class="container">
+		<form id="add-product" class="form-control">
+			<input class="form-control mt-2" type="text" name="name" placeholder="name" />
+			<input class="form-control mt-2" type="text" name="image" placeholder="image" />
+			<input class="form-control mt-2" type="text" name="category" placeholder="category" />
+			<input class="form-control mt-2" type="number" name="price" placeholder="price" />
+			<input class="form-control mt-2" type="number" name="rating" placeholder="rating" />
+			<input class="form-control mt-2" type="datetime-local" name="createdAt" placeholder="createdAt" />
+
+			<button class="btn btn-primary form-control mt-3" type="submit">Qo'shish</button>
+		</form>
+
 		<div class="container p-3">
 			<h2 class="text-center">Products</h2>
 			<div class="cards row"></div>
-		</div>
-
-		<div
-			id="loader"
-			class="spinner-border position-absolute top-50 start-50"
-			role="status"
-		>
-			<span class="visually-hidden">Loading...</span>
 		</div>
 
 		<template id="product-template">
@@ -56,14 +60,14 @@
 								alt=""
 							/>
 						</div>
-						<!-- <button
+						<button
 							data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
-							class="btn btn-primary"
+							class="btn btn-info"
 						>
 							Edit
 						</button>
-						<button class="btn btn-danger">Delete</button> -->
+						<button class="btn btn-danger">Delete</button>
 					</div>
 				</div>
 			</div>
@@ -146,6 +150,6 @@
 		></script>
 		<!-- <script src="./js/utils/findElement.js"></script> -->
 		<!-- <script type="module" src="./test.js"></script> -->
-		<script type="module" src="./js/main.js"></script>
+		<script type="module" src="./js/admin.js"></script>
 	</body>
 </html>

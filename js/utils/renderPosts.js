@@ -1,13 +1,7 @@
-import findElement from './utils/findElement.js';
-
-const loader = findElement('#loader');
-
-const BASE_URL = 'https://63d3e856a93a149755b5c8f1.mockapi.io';
+import findElement from './findElement';
 
 const templateProduct = findElement('#product-template');
 const elCards = findElement('.cards');
-
-let products = [];
 
 function renderProducts(array, parent = elCards) {
 	parent.textContent = '';
@@ -125,22 +119,4 @@ function renderProducts(array, parent = elCards) {
 	parent.appendChild(fragment);
 }
 
-try {
-	async function getData() {
-		const res = await fetch(BASE_URL + '/products');
-
-		loader.style.display = 'none';
-		if (res.status === 404) {
-			throw new Error('qanaqadir xatolik');
-		}
-		let data = await res.json();
-
-		products = data;
-
-		renderProducts(products);
-	}
-
-	getData();
-} catch (err) {
-	console.log(err);
-}
+export default renderProducts;
