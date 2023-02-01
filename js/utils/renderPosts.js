@@ -3,13 +3,14 @@ import findElement from './findElement';
 const templateProduct = findElement('#product-template');
 const elCards = findElement('.cards');
 
-function renderProducts(array, parent = elCards) {
+function renderProducts(array, parent = elCards, template2) {
 	parent.textContent = '';
 
 	const fragment = document.createDocumentFragment();
 
 	array.forEach((product) => {
-		const template = templateProduct.content.cloneNode(true);
+		console.log(product);
+		const template = template2.content.cloneNode(true);
 
 		const title = findElement('.card-title', template);
 		const date = findElement('.date', template);

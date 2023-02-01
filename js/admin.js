@@ -1,8 +1,20 @@
+import { BASE_URL } from './utils/constantas.js';
 import findElement from './utils/findElement.js';
 
-const BASE_URL = 'https://63d3e856a93a149755b5c8f1.mockapi.io';
-
 let products = [];
+
+fetch(BASE_URL + 'products/1', {
+	method: 'PUT',
+	body: JSON.stringify({
+		title: 'test product',
+		price: 13.5,
+		description: 'lorem ipsum set',
+		image: 'https://i.pravatar.cc',
+		category: 'electronic',
+	}),
+})
+	.then((res) => res.json())
+	.then((json) => console.log(json));
 
 const templateProduct = findElement('#product-template');
 const elCards = findElement('.cards');
@@ -22,6 +34,7 @@ function renderProducts(array, parent = elCards) {
 		const category = findElement('.category', template);
 		const price = findElement('.price', template);
 		const rating = findElement('.rating', template);
+		const description = findElement('.description', template);
 
 		const ratingFull = findElement('.rating-full', template);
 		const ratingHalf = findElement('.rating-half', template);
@@ -32,85 +45,38 @@ function renderProducts(array, parent = elCards) {
 		deleteBtn.dataset.id = product.id;
 		editBtn.dataset.id = product.id;
 
-		if (product.rating === 5) {
+		if (Math.round(product.rating.rate) === 5) {
 			for (let i = 0; i < 5; i++) {
 				const img = document.createElement('img');
 				img.src = ratingFull.src;
 
 				ratingStars.appendChild(img);
 			}
-		} else if (product.rating < 5 && product.rating >= 4.5) {
+		} else if (Math.round(product.rating.rate) === 4) {
 			for (let i = 0; i < 4; i++) {
 				const img = document.createElement('img');
 				img.src = ratingFull.src;
 
 				ratingStars.appendChild(img);
 			}
-			const img = document.createElement('img');
-			img.src = ratingHalf.src;
-			ratingStars.appendChild(img);
-		} else if (product.rating < 4.5 && product.rating >= 4) {
-			for (let i = 0; i < 4; i++) {
-				const img = document.createElement('img');
-				img.src = ratingFull.src;
-
-				ratingStars.appendChild(img);
-			}
-		} else if (product.rating < 4 && product.rating >= 3.5) {
+		} else if (Math.round(product.rating.rate) === 3) {
 			for (let i = 0; i < 3; i++) {
 				const img = document.createElement('img');
 				img.src = ratingFull.src;
 
 				ratingStars.appendChild(img);
 			}
-			const img = document.createElement('img');
-
-			img.src = ratingHalf.src;
-			ratingStars.appendChild(img);
-		} else if (product.rating < 3.5 && product.rating >= 3) {
-			for (let i = 0; i < 3; i++) {
-				const img = document.createElement('img');
-				img.src = ratingFull.src;
-
-				ratingStars.appendChild(img);
-			}
-		} else if (product.rating < 3 && product.rating >= 2.5) {
+		} else if (Math.round(product.rating.rate) === 2) {
 			for (let i = 0; i < 2; i++) {
 				const img = document.createElement('img');
 				img.src = ratingFull.src;
 
 				ratingStars.appendChild(img);
 			}
+		} else if (Math.round(product.rating.rate) === 1) {
 			const img = document.createElement('img');
-			img.src = ratingHalf.src;
-			ratingStars.appendChild(img);
-		} else if (product.rating < 2.5 && product.rating >= 2) {
-			for (let i = 0; i < 2; i++) {
-				const img = document.createElement('img');
-				img.src = ratingFull.src;
+			img.src = ratingFull.src;
 
-				ratingStars.appendChild(img);
-			}
-		} else if (product.rating < 2 && product.rating >= 1.5) {
-			for (let i = 0; i < 1; i++) {
-				const img = document.createElement('img');
-				img.src = ratingFull.src;
-
-				ratingStars.appendChild(img);
-			}
-			const img = document.createElement('img');
-			img.src = ratingHalf.src;
-			ratingStars.appendChild(img);
-		} else if (product.rating < 1.5 && product.rating >= 1) {
-			for (let i = 0; i < 1; i++) {
-				const img = document.createElement('img');
-				img.src = ratingFull.src;
-
-				ratingStars.appendChild(img);
-			}
-		} else if (product.rating < 1 && product.rating >= 0.5) {
-			const img = document.createElement('img');
-			img.src = ratingHalf.src;
 			ratingStars.appendChild(img);
 		} else {
 		}
@@ -118,8 +84,9 @@ function renderProducts(array, parent = elCards) {
 		title.textContent = product.name;
 		date.textContent = product.createdAt;
 		category.textContent = product.category;
-		price.textContent = product.price;
-		rating.textContent = product.rating;
+		price.textContent = product.price + '$';
+		rating.textContent = `${product.rating.count}ta odamdan  ${product.rating.rate} ⭐️ `;
+		description.textContent = product.description;
 		img.src = product.image;
 
 		fragment.appendChild(template);
@@ -131,8 +98,8 @@ function renderProducts(array, parent = elCards) {
 
 function getData() {
 	try {
-		async function getData() {
-			const res = await fetch(BASE_URL + '/products');
+		async function takeData() {
+			const res = await fetch(BASE_URL + 'products');
 
 			if (res.status === 404) {
 				throw new Error('qanaqadir xatolik');
@@ -144,7 +111,7 @@ function getData() {
 			renderProducts(products);
 		}
 
-		getData();
+		takeData();
 	} catch (err) {
 		console.log(err);
 	}
@@ -152,6 +119,7 @@ function getData() {
 
 getData();
 
+// add Product
 elForm.addEventListener('submit', (evt) => {
 	evt.preventDefault();
 
@@ -160,22 +128,25 @@ elForm.addEventListener('submit', (evt) => {
 	const category = evt.target.category.value;
 	const price = evt.target.price.value;
 	const rating = evt.target.rating.value;
-	const createdAt = evt.target.createdAt.value;
+	const description = evt.target.description.value;
 
 	const newProduct = {
 		name,
 		image,
 		category,
-		rating,
+		rating: {
+			rate: rating,
+			count: 1000,
+		},
 		price,
-		createdAt,
+		description,
 	};
 
-	fetch(BASE_URL + '/products', {
+	fetch(BASE_URL + 'products', {
 		method: 'POST',
 		body: JSON.stringify(newProduct),
 	})
-		.then((res) => res.json)
+		.then((res) => res.json())
 		.then((data) => {
 			console.log(data);
 
@@ -188,11 +159,12 @@ elForm.addEventListener('submit', (evt) => {
 		});
 });
 
+// edit and delete product
 elCards.addEventListener('click', (evt) => {
 	if (evt.target.className.includes('btn-danger')) {
 		const id = evt.target.dataset.id;
 
-		fetch(BASE_URL + '/products/' + id, {
+		fetch(BASE_URL + 'products/' + id, {
 			method: 'DELETE',
 		})
 			.then((res) => res.json())
