@@ -5,8 +5,26 @@ const loader = findElement('#loader');
 const templateProduct = findElement('#product-template');
 const elCards = findElement('.cards');
 const ulCategory = findElement('.list-group');
+const searchInput = findElement('#search-input');
 
 let products = [];
+
+searchInput.addEventListener('input', () => {
+	const value = searchInput.value;
+
+	const resultProducts = [];
+	products.forEach((product) => {
+		const title = product.title;
+
+		const lengthValue = value.length;
+		const searchedProduct = title.slice(0, lengthValue);
+		if (value.toLowerCase() === searchedProduct.toLowerCase()) {
+			resultProducts.push(product);
+		}
+	});
+
+	renderProducts(resultProducts);
+});
 
 const renderProducts = (array, parent = elCards) => {
 	parent.textContent = '';
@@ -35,7 +53,7 @@ const renderProducts = (array, parent = elCards) => {
 			ratingStars.appendChild(img);
 		}
 
-		title.textContent = product.name;
+		title.textContent = product.title;
 		date.textContent = product.createdAt;
 		category.textContent = product.category;
 		price.textContent = `${product.price}$`;

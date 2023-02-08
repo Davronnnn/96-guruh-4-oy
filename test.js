@@ -1,7 +1,14 @@
-const number = 12;
+const obj = {
+	name: 'john',
+	age: 25,
+	sayHello() {
+		return 'salom ' + this.name;
+	},
+};
 
-// null "" 0 undefined false
+console.log(obj.sayHello());
 
-const nimadir = number || 'salom'; 
+const { name, sayHello } = obj;
 
-console.log(nimadir);
+console.log(window.name);
+console.log(sayHello());

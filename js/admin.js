@@ -1,7 +1,33 @@
 import { BASE_URL } from './utils/constantas.js';
 import findElement from './utils/findElement.js';
 
+const file = findElement('#file-image');
+const result = findElement('#result-image');
+
+file.addEventListener('change', (evt) => {
+	const file = evt.target.files[0];
+
+	console.log(evt);
+	result.innerHTML = `<div class="image">
+                <img width="300" height="300" src="${URL.createObjectURL(
+					file
+				)}" alt="image">
+				<p> ${Math.round(file.size / 1000)}kb </p>
+              </div>`;
+
+	// back end uchun
+	const formData = new FormData();
+
+	formData.append('image', file);
+});
+
 let products = [];
+
+const token = localStorage.getItem('token');
+
+if (!token) {
+	window.location.href = 'http://127.0.0.1:5500/login.html';
+}
 
 fetch(BASE_URL + 'products/1', {
 	method: 'PUT',
@@ -144,6 +170,10 @@ elForm.addEventListener('submit', (evt) => {
 
 	fetch(BASE_URL + 'products', {
 		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authentication: 'Bearer' + token,
+		},
 		body: JSON.stringify(newProduct),
 	})
 		.then((res) => res.json())
@@ -166,6 +196,9 @@ elCards.addEventListener('click', (evt) => {
 
 		fetch(BASE_URL + 'products/' + id, {
 			method: 'DELETE',
+			headers: {
+				Authentication: 'Bearer' + token,
+			},
 		})
 			.then((res) => res.json())
 			.then((data) => {
