@@ -114,7 +114,11 @@ elCards.addEventListener('click', (evt) => {
 	) {
 		const id = evt.target.dataset.id;
 		localStorage.setItem('id', id);
-		window.location.href = 'single-product.html';
+		// window.location.href = 'single-product.html';
+		window.open(
+			'http://127.0.0.1:5500/single-product.html',
+			'_blank' // <- This is what makes it open in a new window.
+		);
 	}
 });
 
