@@ -7,6 +7,28 @@ const elCards = findElement('.cards');
 const ulCategory = findElement('.list-group');
 const searchInput = findElement('#search-input');
 
+const loginBtn = findElement('#login-btn');
+const adminLink = findElement('#admin-link');
+
+const token = localStorage.getItem('token');
+
+if (token) {
+	loginBtn.textContent = 'Chiqish';
+} else {
+	adminLink.style.display = 'none';
+}
+
+loginBtn.addEventListener('click', () => {
+	const token = localStorage.getItem('token');
+	console.log(token);
+	if (!token) {
+		window.location.href = 'login.html';
+	} else {
+		localStorage.removeItem('token');
+		loginBtn.textContent = 'Kirish';
+		adminLink.style.display = 'none';
+	}
+});
 let products = [];
 
 searchInput.addEventListener('input', () => {

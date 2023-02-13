@@ -172,7 +172,7 @@ elForm.addEventListener('submit', (evt) => {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Authentication: 'Bearer' + token,
+			Authentication: 'Bearer' + 'asdjJLKSdalksdlkSD',
 		},
 		body: JSON.stringify(newProduct),
 	})
@@ -197,7 +197,7 @@ elCards.addEventListener('click', (evt) => {
 		fetch(BASE_URL + 'products/' + id, {
 			method: 'DELETE',
 			headers: {
-				Authentication: 'Bearer' + token,
+				Authentication: 'Bearer ' + token,
 			},
 		})
 			.then((res) => res.json())
