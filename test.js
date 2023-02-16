@@ -1,21 +1,21 @@
-// const obj = {
-// 	// name: 'kimdir',
-// 	// age: 20,
-// 	// address: {
-// 	// 	city: 'tashkent',
-// 	// 	street: 'Alisher Navoi',
-// 	// },
-// };
+const speechBtn = document.querySelector('#speechBtn');
+const speechResult = document.querySelector('#speech-result');
 
-// const numbersArray = [0, 0, 2, 3, 4, 5, 6, 7, 8, 9];
+const speech = new webkitSpeechRecognition();
 
-// const numbers = new Set(numbersArray);
+speech.lang = 'en-US';
 
-// console.log(numbers);
+speechBtn.addEventListener('click', () => {
+	speech.start();
 
-const obj = {
-	name: 'Test',
-	
-};
+	speech.onresult = (e) => {
+		const transcript = e.results[0][0].transcript;
 
-console.log(obj['name']);
+		document.body.style.background = transcript;
+		speechResult.textContent = transcript;
+	};
+
+	speech.onend = () => {
+		alert('Speech recognition service disconnected');
+	};
+});

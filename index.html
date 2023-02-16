@@ -22,6 +22,10 @@
 		.rating-stars img {
 			width: 30px;
 		}
+
+		.active {
+			background-color: blue !important;
+		}
 	</style>
 	<body class="p-5">
 		<div>
@@ -29,6 +33,8 @@
 				Kirish
 			</button>
 
+			<button id="speechBtn">Speech Recognition</button>
+			<p id="speech-result"></p>
 			<a id="admin-link" href="./admin.html"> Admin</a>
 		</div>
 
@@ -83,6 +89,8 @@
 			/>
 			<ul class="list-group d-flex flex-row"></ul>
 			<div class="cards row"></div>
+
+			<ul class="pagination d-flex"></ul>
 		</div>
 		<div
 			id="loader"
@@ -117,14 +125,6 @@
 								alt=""
 							/>
 						</div>
-						<!-- <button
-							data-bs-toggle="modal"
-							data-bs-target="#exampleModal"
-							class="btn btn-primary"
-						>
-							Edit
-						</button>
-						<button class="btn btn-danger">Delete</button> -->
 					</div>
 				</div>
 			</div>
